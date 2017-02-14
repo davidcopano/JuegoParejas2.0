@@ -13,6 +13,8 @@
             background-image: url("images/background.jpg");
             background-size: cover;
             background-attachment: fixed;
+
+            cursor: url("images/mouse.cur"), auto;
         }
 
         @font-face {
@@ -78,6 +80,14 @@
             color: white !important;
             background-color: #a72230 !important;
         }
+
+        button:hover {
+            cursor: url("images/mouse.cur"), auto;
+        }
+
+        button.btn {
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -127,7 +137,7 @@
     </div>
     <script>
 
-        var arrayCartas = [], numCartasLev = 0, cartasLevantadas = [];
+        var arrayCartas = [], ncartaslevantadas = 0, cartaslevantadas = [];
 
         $(document).ready(function () {
             $("button.dificultades").click(function () {
@@ -139,6 +149,8 @@
                     var aux = "";
 
                     arrayCartas = [];
+
+                    var j = 1;
 
                     for(var i = 0; i < json.imagenes.length; i++) {
                         aux = "<div class='carta' data-id='A" + json.imagenes[i].id + "' id='" + j + "' data-lev='N'><div class='front'><img src='images/back.jpg'/></div><div class='back'><img src='"+ json.imagenes[i].url +"'> </div></div>";
@@ -174,50 +186,47 @@
                         }
                     }
 
-                    $("#divDificultades, #logo, .container h1").fadeOut();
+                    $("#divDificultades, #logo, .container h1").hide();
 
-                    $("#divCartas").html(salida).fadeIn();
+                    $("#divCartas").html(salida).fadeIn("slow");
 
                     $("div.carta").flip();
 
                     $("div.carta").on("click", function () {
                         var flip = $(this).data("flip-model");
 
-                        if(flip.isFlipped == false) {
+                        if(flip.isFlipped != true) {
                             $(this).flip(true);
                         }
 
-                        if(flip.isFlipped && $(this).attr('data-lev') != "S"){ // COMPRUEBA SI LA CARTA ESTA GIRADA
-                            if(numCartasLev==0){
-                                cartasLevantadas.push($(this));
-                                numCartasLev++;
+                        if(flip.isFlipped == true && $(this).attr('data-lev')!="S"){ // COMPRUEBA SI LA CARTA ESTA GIRADA
+                            if(ncartaslevantadas==0){
+                                cartaslevantadas.push($(this));
+                                ncartaslevantadas++;
                             }
-                            if(numCartasLev == 1){
-                                if(cartasLevantadas[0].attr('id') != $(this).attr('id')){
-                                    cartasLevantadas.push($(this));
-                                    numCartasLev++;
+                            if(ncartaslevantadas==1){
+                                if(cartaslevantadas[0].attr('id') != $(this).attr('id')){
+                                    cartaslevantadas.push($(this));
+                                    ncartaslevantadas++;
                                 }
                             }
-                            if(numCartasLev == 2){
+                            if(ncartaslevantadas==2){
                                 $("#blockcards").show();
-                                if(cartasLevantadas[0].attr('data-id') != cartasLevantadas[1].attr('data-id')){
-                                    var id1 = cartasLevantadas[0].attr('id').toString();
-                                    var id2 = cartasLevantadas[1].attr('id').toString();
-
+                                if(cartaslevantadas[0].attr('data-id') != cartaslevantadas[1].attr('data-id')){
+                                    var id1 = cartaslevantadas[0].attr('id').toString();
+                                    var id2 = cartaslevantadas[1].attr('id').toString();
                                     setTimeout(function(){
                                         $("#"+id1).flip(false);
                                         $("#"+id2).flip(false);
-                                    }, 600);
+                                    },600);
                                 }
                                 else{
-                                    cartasLevantadas[0].attr('data-lev','S');
-                                    cartasLevantadas[1].attr('data-lev','S');
+                                    cartaslevantadas[0].attr('data-lev','S');
+                                    cartaslevantadas[1].attr('data-lev','S');
                                 }
-                                setTimeout(function(){
-                                    $("#blockcards").hide();
-                                }, 600);
-                                numCartasLev = 0;
-                                cartasLevantadas = [];
+                                setTimeout(function(){$("#blockcards").hide();},600);
+                                ncartaslevantadas = 0;
+                                cartaslevantadas = [];
                             }
                         }
                     });
