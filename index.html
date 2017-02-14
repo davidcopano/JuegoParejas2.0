@@ -137,7 +137,7 @@
     </div>
     <script>
 
-        var arrayCartas = [], ncartaslevantadas = 0, cartaslevantadas = [];
+        var arrayCartas = [], numCartasLevantadas = 0, cartasLevantadas = [];
 
         $(document).ready(function () {
             $("button.dificultades").click(function () {
@@ -199,34 +199,42 @@
                             $(this).flip(true);
                         }
 
-                        if(flip.isFlipped == true && $(this).attr('data-lev')!="S"){ // COMPRUEBA SI LA CARTA ESTA GIRADA
-                            if(ncartaslevantadas==0){
-                                cartaslevantadas.push($(this));
-                                ncartaslevantadas++;
+                        if(flip.isFlipped && $(this).attr('data-lev') != "S")
+                        {
+                            if(numCartasLevantadas == 0)
+                            {
+                                cartasLevantadas.push($(this));
+                                numCartasLevantadas++;
                             }
-                            if(ncartaslevantadas==1){
-                                if(cartaslevantadas[0].attr('id') != $(this).attr('id')){
-                                    cartaslevantadas.push($(this));
-                                    ncartaslevantadas++;
+                            if(numCartasLevantadas == 1)
+                            {
+                                if(cartasLevantadas[0].attr('id') != $(this).attr('id')) {
+                                    cartasLevantadas.push($(this));
+                                    numCartasLevantadas++;
                                 }
                             }
-                            if(ncartaslevantadas==2){
+                            if(numCartasLevantadas == 2)
+                            {
                                 $("#blockcards").show();
-                                if(cartaslevantadas[0].attr('data-id') != cartaslevantadas[1].attr('data-id')){
-                                    var id1 = cartaslevantadas[0].attr('id').toString();
-                                    var id2 = cartaslevantadas[1].attr('id').toString();
-                                    setTimeout(function(){
-                                        $("#"+id1).flip(false);
-                                        $("#"+id2).flip(false);
-                                    },600);
+                                if(cartasLevantadas[0].attr('data-id') != cartasLevantadas[1].attr('data-id'))
+                                {
+                                    var id = cartasLevantadas[0].attr('id').toString();
+                                    var id2 = cartasLevantadas[1].attr('id').toString();
+                                    setTimeout(function() {
+                                        $("#" + id).flip(false);
+                                        $("#" + id2).flip(false);
+                                    }, 600);
                                 }
-                                else{
-                                    cartaslevantadas[0].attr('data-lev','S');
-                                    cartaslevantadas[1].attr('data-lev','S');
+                                else {
+                                    cartasLevantadas[0].attr('data-lev','S');
+                                    cartasLevantadas[1].attr('data-lev','S');
                                 }
-                                setTimeout(function(){$("#blockcards").hide();},600);
-                                ncartaslevantadas = 0;
-                                cartaslevantadas = [];
+                                setTimeout(function(){
+                                    $("#blockcards").hide();
+                                }, 600);
+
+                                numCartasLevantadas = 0;
+                                cartasLevantadas = [];
                             }
                         }
                     });
