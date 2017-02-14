@@ -153,12 +153,12 @@
                     var j = 1;
 
                     for(var i = 0; i < json.imagenes.length; i++) {
-                        aux = "<div class='carta' data-id='A" + json.imagenes[i].id + "' id='" + j + "' data-lev='N'><div class='front'><img src='images/back.jpg'/></div><div class='back'><img src='"+ json.imagenes[i].url +"'> </div></div>";
+                        aux = "<div class='carta' data-id='A" + json.imagenes[i].id + "' id='" + j + "' data-lev='N'><div class='front'><img src='images/back.jpg'/></div><div class='back'><img src='"+ json.imagenes[i].url +"'></div></div>";
 
                         arrayCartas.push(aux);
 
                         j++;
-                        aux = "<div class='carta' data-id='A" + json.imagenes[i].id + "' id='" + j + "' data-lev='N'><div class='front'><img src='images/back.jpg'/></div><div class='back'><img src='"+ json.imagenes[i].url +"'> </div></div>";
+                        aux = "<div class='carta' data-id='A" + json.imagenes[i].id + "' id='" + j + "' data-lev='N'><div class='front'><img src='images/back.jpg'/></div><div class='back'><img src='"+ json.imagenes[i].url +"'> </div><img src='" + json.imagenes[i].url + "' style='display: none'/> </div>";
 
                         arrayCartas.push(aux);
 
