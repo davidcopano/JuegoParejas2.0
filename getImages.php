@@ -24,15 +24,26 @@ if(isset($_GET["d"]))
         array_shift($archivos);
         array_shift($archivos);
 
+        $narchivos = count($archivos);
+
         shuffle($archivos);
 
         $dificultad = intval($_GET["d"]);
+
+        $ncartas = 0;
+
+        $longitud = 0;
 
         switch ($dificultad)
         {
             // Tamaño de 12 cartas (6 cartas con su pareja)
             case 1: {
-                for($i = 0; $i < 14; $i++) {
+
+                $ncartas = 6;
+
+                $longitud = $narchivos - $ncartas;
+
+                for($i = 0; $i < $longitud; $i++) {
                     array_pop($archivos);
                 }
             }
@@ -41,7 +52,11 @@ if(isset($_GET["d"]))
 
             // Tamaño de 16 cartas (8 cartas con su pareja)
             case 2: {
-                for($i = 0; $i < 12; $i++) {
+                $ncartas = 8;
+
+                $longitud = $narchivos - $ncartas;
+
+                for($i = 0; $i < $longitud; $i++) {
                     array_pop($archivos);
                 }
             }
@@ -49,7 +64,11 @@ if(isset($_GET["d"]))
             break;
 
             case 3: {
-                for($i = 0; $i < 10; $i++) {
+                $ncartas = 10;
+
+                $longitud = $narchivos - $ncartas;
+
+                for($i = 0; $i < $longitud; $i++) {
                     array_pop($archivos);
                 }
             }
