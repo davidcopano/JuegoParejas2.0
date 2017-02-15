@@ -5,6 +5,7 @@
     <title>Juego de Parejas 2.0</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -115,9 +116,30 @@
                 box-shadow: 0 0 200px 50px #ffffe7;
             }
         }
+
+        .left-bar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            color: white;
+            padding-top: 15%;
+            background-color: #080D13;
+        }
+
+        #modalReiniciar {
+            animation-duration: .8s;
+        }
     </style>
 </head>
 <body>
+    <div class="left-bar col-sm-2" style="display: none;">
+        <strong id="info">Información de la partida</strong>
+        <span>Número de intentos: <span id="intentos" style="margin-left: 0">0</span></span>
+        <span>Nº parejas acertadas: <span id="aciertos" style="margin-left: 0">0</span></span>
+        <span>Cartas restantes: <span id="cartasRestantes" style="margin-left: 0">0</span></span>
+        <button class="btn btn-danger" data-target="#modalReiniciar" data-toggle="modal" id="btnReiniciar">Iniciar nueva partida</button>
+    </div>
     <div class="container">
         <h1>Juego de <span class="red">Parejas</span> 2.0</h1>
         <div id="blockcards" style="display: none;"></div>
@@ -140,16 +162,11 @@
             </div>
         </div>
         <div class="row" id="loading" style="display: none">
-            <img src="images/loading.svg" alt="Cargando">
+            <div class="col-sm-offset-9">
+                <img src="images/loading.svg" alt="Cargando">
+            </div>
         </div>
         <div class="row" id="divCartas" style="margin-left: 20%; display: none;"></div>
-    </div>
-    <div class="bottom-bar" style="display: none;">
-        <strong id="info">Información de la partida</strong>
-        <span>Número de intentos: <span id="intentos" style="margin-left: 0">0</span></span>
-        <span>Nº parejas acertadas: <span id="aciertos" style="margin-left: 0">0</span></span>
-        <span>Cartas restantes: <span id="cartasRestantes" style="margin-left: 0">0</span></span>
-        <button class="btn btn-danger" data-target="#modalReiniciar" data-toggle="modal" id="btnReiniciar">Iniciar nueva partida</button>
     </div>
     <div id="modalReiniciar" class="modal animated zoomIn" role="dialog" data-easein="expandIn">
         <div class="modal-dialog">
@@ -174,11 +191,10 @@
         </div>
     </div>
     <script>
-
         var arrayCartas = [], numCartasLevantadas = 0, cartasLevantadas = [];
 
         $(document).ready(function () {
-            /* Detectar si el navegador es Firefox, esto se hace para que no salga scroll al hacer hover */
+            /* Detectar si el navegador es Firefox o Edge, esto se hace para que no salga scroll al hacer hover */
 
             if(navigator.userAgent.indexOf("Firefox") != -1 || window.navigator.userAgent.indexOf("Edge") > -1) {
                 $("body").css("overflow", "hidden");
@@ -261,11 +277,9 @@
 
                     $("#loading").hide();
 
-                    $("#divCartas").html(salida);
+                    $(".left-bar").fadeIn("slow");
 
-                    $("#divCartas *").ready(function () {
-                        $("#divCartas").fadeIn("slow");
-                    });
+                    $("#divCartas").html(salida).fadeIn("slow");
 
                     //$("#divCartas").html(salida).fadeIn("slow");
 
