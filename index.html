@@ -109,6 +109,8 @@
             border-radius: 40%;
             margin-left: 9%;
             margin-top: 2.5%;
+        }
+        .brillo{
             -webkit-animation: brillo 2.5s ease-in-out infinite alternate;
             animation: brillo 2.5s ease-in-out infinite alternate;
         }
@@ -133,7 +135,7 @@
                 <button class="btn hard dificultades" value="2">Sangre, sudor y lágrimas (6x3)</button>
             </div>
             <div class="col-sm-offset-3" style="margin-left: 32%; margin-top: 3%" id="instrucciones">
-                <div id="reflejo" style=""></div>
+                <div id="reflejo" class="brillo"></div>
                 <div id="continstrucciones" style="width: 50%">
                     <div class="front">
                         <img src="images/main2.gif" alt="Logo" width="450" height="325" id="logo">
@@ -195,19 +197,14 @@
                     $("#logo2").attr("height",height2);
                     $("#logo2").css("margin-left","-17%");
                     $("#logo2").css("margin-top","-12%");
+                    $("#reflejo").removeClass("brillo");
             }, function () {
                 $("#logo2").css("transition", "all 0.5s");
                 $("#logo2").attr("width",width);
                 $("#logo2").attr("height",height);
                 $("#logo2").css("margin-left","0");
-                $("#logo2").css("margin-top","0");});
-
-//            $("#continstrucciones").on("mouseout", function () {
-//
-////                $("#logo2").css("transition", "all 0.5s");
-//                $("#logo2").attr("width",width);
-//                $("#logo2").attr("height",height);
-//            });
+                $("#logo2").css("margin-top","0");
+                setTimeout(function(){$("#reflejo").addClass("brillo");},400)});
 
             $("button.dificultades").click(function () {
                 $.get("getImages.php", { d: $(this).val() }, function (data) {
