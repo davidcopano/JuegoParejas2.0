@@ -42,28 +42,20 @@
             transition: all 0.3s;
         }
 
-        #logo:hover , .carta:hover {
-            -webkit-transform: scale(1.1);
+        #logo:hover, .carta:hover {
             -moz-transform: scale(1.1);
             -o-transform: scale(1.1);
             transform: scale(1.1);
-            /*transition: all 0.5s;*/
-            /*-webkit-transition: all 0.5s;*/
+            -webkit-backface-visibility: hidden;
         }
         #continstrucciones:hover{
-            -webkit-transform: scale(1.5);
-            -moz-transform: scale(1.5);
-            -o-transform: scale(1.5);
-            transform: scale(1.5);
+            -webkit-transform: scale(1.4);
+            -moz-transform: scale(1.4);
+            -o-transform: scale(1.4);
+            transform: scale(1.4);
             transition: all 0.6s;
             -webkit-transition: all 0.6s;
         }
-        /*#logo2:hover{*/
-            /*width:675px;*/
-            /*height:487px;*/
-            /*transition: all 0.6s;*/
-            /*-webkit-transition: all 0.6s;*/
-        /*}*/
 
         div.carta {
             width: 12%; /*  7%   1:1,55 */
@@ -117,10 +109,10 @@
         }
         @keyframes brillo{
             from{
-                box-shadow: 0px 0px 100px 25px #ffffe7;
+                box-shadow: 0 0 100px 25px #ffffe7;
             }
             to{
-                box-shadow: 0px 0px 200px 50px #ffffe7;
+                box-shadow: 0 0 200px 50px #ffffe7;
             }
         }
     </style>
@@ -146,6 +138,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row" id="loading" style="display: none">
+            <img src="images/loading.svg" alt="Cargando">
         </div>
         <div class="row" id="divCartas" style="margin-left: 20%; display: none;"></div>
     </div>
@@ -183,6 +178,12 @@
         var arrayCartas = [], numCartasLevantadas = 0, cartasLevantadas = [];
 
         $(document).ready(function () {
+            /* Detectar si el navegador es Firefox, esto se hace para que no salga scroll al hacer hover */
+
+            if(navigator.userAgent.indexOf("Firefox") != -1 || window.navigator.userAgent.indexOf("Edge") > -1) {
+                $("body").css("overflow", "hidden");
+            }
+
             var width = $("#logo2").width();
             var height = $("#logo2").height();
 
@@ -208,6 +209,9 @@
                 setTimeout(function(){$("#reflejo").addClass("brillo");},400)});
 
             $("button.dificultades").click(function () {
+
+                $("#loading").show();
+
                 $.get("getImages.php", { d: $(this).val() }, function (data) {
                     var json = JSON.parse(data);
                     //alert(json.imagenes[0].url);
@@ -255,7 +259,15 @@
 
                     $("#divDificultades, #logo, .container h1").hide();
 
-                    $("#divCartas").html(salida).fadeIn("slow");
+                    $("#loading").hide();
+
+                    $("#divCartas").html(salida);
+
+                    $("#divCartas *").ready(function () {
+                        $("#divCartas").fadeIn("slow");
+                    });
+
+                    //$("#divCartas").html(salida).fadeIn("slow");
 
                     $("div.carta").flip();
 
