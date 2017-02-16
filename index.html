@@ -79,7 +79,7 @@
             color: #a72230;
         }
 
-        #divDificultades button {
+        #divDificultades button, #modalReiniciar .btn:first-child {
             color: black;
             background-color: white;
         }
@@ -130,15 +130,39 @@
         #modalReiniciar {
             animation-duration: .8s;
         }
+
+        #info {
+            position: absolute;
+            top: 50px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        #modalReiniciar button {
+            text-align: center;
+        }
+
+        #modalReiniciar button:first-child {
+            margin-bottom: 2%;
+        }
+
+        #h1Partida {
+            color: black;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="left-bar col-sm-2" style="display: none;">
         <strong id="info">Información de la partida</strong>
-        <span>Número de intentos: <span id="intentos" style="margin-left: 0">0</span></span>
-        <span>Nº parejas acertadas: <span id="aciertos" style="margin-left: 0">0</span></span>
-        <span>Cartas restantes: <span id="cartasRestantes" style="margin-left: 0">0</span></span>
+        <p>Número de intentos: <span id="intentos" style="margin-left: 0">0</span></p>
+        <p>Nº parejas acertadas: <span id="aciertos" style="margin-left: 0">0</span></p>
+        <p>Cartas restantes: <span id="cartasRestantes" style="margin-left: 0">0</span></p>
         <button class="btn btn-danger" data-target="#modalReiniciar" data-toggle="modal" id="btnReiniciar">Iniciar nueva partida</button>
+        <audio autoplay>
+            <source src="audio/main.ogg" type="audio/ogg">
+            <source src="audio/main.mp3" type="audio/mp3">
+        </audio>
     </div>
     <div class="container">
         <h1>Juego de <span class="red">Parejas</span> 2.0</h1>
@@ -146,7 +170,7 @@
         <div class="row" id="divDificultades">
             <h2>Elige el modo de dificultad:</h2>
             <div class="col-sm-offset-3" style="margin-left: 29%">
-                <button class="btn dificultades" value="1">La historia y la espada (6x2)</button>
+                <button class="btn dificultades" value="1" style="border: 2px solid black">La historia y la espada (6x2)</button>
                 <button class="btn hard dificultades" value="2">Sangre, sudor y lágrimas (6x3)</button>
             </div>
             <div class="col-sm-offset-3" style="margin-left: 32%; margin-top: 3%" id="instrucciones">
@@ -179,8 +203,8 @@
                 <div class="modal-body">
                     <p>Elige la dificultad. <strong>NOTA</strong>: Se perderá todo el progreso realizado.</p>
                     <div class="col-sm-offset-3">
-                        <button class="btn btn-success dificultades" value="1">Fácil (6x2)</button>
-                        <button class="btn btn-warning dificultades" value="2">Medio (6x3)</button>
+                        <button class="btn btn-success dificultades" value="1" style="border: 2px solid black">La historia y la espada (6x2)</button>
+                        <button class="btn hard dificultades" value="2">Sangre, sudor y lágrimas (6x3)</button>
                     </div>
                 </div>
 
@@ -208,6 +232,11 @@
             });
 
             $("#continstrucciones").hover(function () {
+
+                if(navigator.userAgent.indexOf("Firefox") != -1 || window.navigator.userAgent.indexOf("Edge") > -1) {
+                    $("body").css("overflow", "hidden");
+                }
+
                 var width2 = width*1.2;
                 var height2 = height*1.2;
 
@@ -222,7 +251,11 @@
                 $("#logo2").attr("height",height);
                 $("#logo2").css("margin-left","0");
                 $("#logo2").css("margin-top","0");
-                setTimeout(function(){$("#reflejo").addClass("brillo");},400)});
+                setTimeout(function(){
+                    $("#reflejo").addClass("brillo");
+                    if(navigator.userAgent.indexOf("Firefox") != -1 || window.navigator.userAgent.indexOf("Edge") > -1) {
+                    $("body").css("overflow", "auto");
+                }},400)});
 
             $("button.dificultades").click(function () {
 
