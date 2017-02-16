@@ -150,6 +150,23 @@
             color: black;
             text-align: center;
         }
+
+        .right-bar {
+            margin-top: 20px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 75px;
+        }
+
+        .right-bar img {
+            margin-right: 20px;
+        }
+
+        .right-bar img:not(:first-child) {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -159,10 +176,17 @@
         <p>Nº parejas acertadas: <span id="aciertos" style="margin-left: 0">0</span></p>
         <p>Cartas restantes: <span id="cartasRestantes" style="margin-left: 0">0</span></p>
         <button class="btn btn-danger" data-target="#modalReiniciar" data-toggle="modal" id="btnReiniciar">Iniciar nueva partida</button>
-        <audio autoplay>
+    </div>
+    <div class="right-bar">
+        <audio autoplay id="music">
             <source src="audio/main.ogg" type="audio/ogg">
             <source src="audio/main.mp3" type="audio/mp3">
         </audio>
+        <div class="audio-controls">
+            <img src="images/audio/play.svg" alt="Reproducir" title="Reproducir" onclick="document.getElementById('music').play();">
+            <img src="images/audio/pause.svg" alt="Pausar" title="Parar" onclick="document.getElementById('music').pause()">
+            <img src="images/audio/mute.svg" alt="Volumen" title="Silenciar" data-muted="true" onclick="cambiaVolumen(this)">
+        </div>
     </div>
     <div class="container">
         <h1>Juego de <span class="red">Parejas</span> 2.0</h1>
@@ -218,12 +242,6 @@
         var arrayCartas = [], numCartasLevantadas = 0, cartasLevantadas = [];
 
         $(document).ready(function () {
-            /* Detectar si el navegador es Firefox o Edge, esto se hace para que no salga scroll al hacer hover */
-
-            if(navigator.userAgent.indexOf("Firefox") != -1 || window.navigator.userAgent.indexOf("Edge") > -1) {
-                $("body").css("overflow", "hidden");
-            }
-
             var width = $("#logo2").width();
             var height = $("#logo2").height();
 
@@ -375,6 +393,21 @@
                 x = a[i - 1];
                 a[i - 1] = a[j];
                 a[j] = x;
+            }
+        }
+
+        function cambiaVolumen(elemento) {
+            if($(elemento).attr("data-muted") == "true") {
+                document.getElementById("music").muted = true;
+                $(elemento).attr("src", "images/audio/volumen.svg");
+                $(elemento).attr("data-muted", "false");
+                $(elemento).attr("title", "Aumentar volumen");
+            }
+            else {
+                document.getElementById("music").muted = false;
+                $(elemento).attr("src", "images/audio/mute.svg");
+                $(elemento).attr("data-muted", "true");
+                $(elemento).attr("title", "Silenciar");
             }
         }
     </script>
