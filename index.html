@@ -110,10 +110,19 @@
         }
         @keyframes brillo{
             from{
-                box-shadow: 0 0 100px 25px #ffffe7;
+                box-shadow: 0 0 100px 25px rgba(254, 255, 187, 0.84);
             }
             to{
                 box-shadow: 0 0 200px 50px #ffffe7;
+            }
+        }
+
+        @keyframes brilloCarta{
+            from{
+                box-shadow: 0 0 50px 5px #ffffe7;
+            }
+            to{
+                box-shadow: 0 0 100px 10px #ffffe7;
             }
         }
 
@@ -167,6 +176,21 @@
         .right-bar img:not(:first-child) {
             margin-top: 20px;
         }
+
+        .btn {
+            border-radius: 0;
+        }
+
+        #autor {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            color: #a72230;
+        }
+
+        .carta:hover {
+            box-shadow: 0 0 50px 5px #ffffe7;
+        }
     </style>
 </head>
 <body>
@@ -175,7 +199,11 @@
         <p>Número de intentos: <span id="intentos" style="margin-left: 0">0</span></p>
         <p>Nº parejas acertadas: <span id="aciertos" style="margin-left: 0">0</span></p>
         <p>Cartas restantes: <span id="cartasRestantes" style="margin-left: 0">0</span></p>
-        <button class="btn btn-danger" data-target="#modalReiniciar" data-toggle="modal" id="btnReiniciar">Iniciar nueva partida</button>
+        <button class="btn hard" data-target="#modalReiniciar" data-toggle="modal" id="btnReiniciar">Iniciar nueva partida</button>
+        <div id="autor">
+            <h4>David Copano Jiménez</h4>
+            <p style="text-align: right">2º DAW</p>
+        </div>
     </div>
     <div class="right-bar">
         <audio autoplay id="music">
@@ -194,7 +222,7 @@
         <div class="row" id="divDificultades">
             <h2>Elige el modo de dificultad:</h2>
             <div class="col-sm-offset-3" style="margin-left: 29%">
-                <button class="btn dificultades" value="1" style="border: 2px solid black">La historia y la espada (6x2)</button>
+                <button class="btn dificultades" value="1" style="border: 2px solid black">La historia y la espada (4x4)</button>
                 <button class="btn hard dificultades" value="2">Sangre, sudor y lágrimas (6x3)</button>
             </div>
             <div class="col-sm-offset-3" style="margin-left: 32%; margin-top: 3%" id="instrucciones">
@@ -227,7 +255,7 @@
                 <div class="modal-body">
                     <p>Elige la dificultad. <strong>NOTA</strong>: Se perderá todo el progreso realizado.</p>
                     <div class="col-sm-offset-3">
-                        <button class="btn btn-success dificultades" value="1" style="border: 2px solid black">La historia y la espada (6x2)</button>
+                        <button class="btn btn-success dificultades" value="1" style="border: 2px solid black">La historia y la espada (4x4)</button>
                         <button class="btn hard dificultades" value="2">Sangre, sudor y lágrimas (6x3)</button>
                     </div>
                 </div>
@@ -240,6 +268,7 @@
     </div>
     <script>
         var arrayCartas = [], numCartasLevantadas = 0, cartasLevantadas = [];
+        var intentos = 0, aciertos = 0;
 
         $(document).ready(function () {
             var width = $("#logo2").width();
@@ -276,6 +305,12 @@
                 }},400)});
 
             $("button.dificultades").click(function () {
+
+                intentos = 0;
+                $("#intentos").html(intentos);
+
+                aciertos = 0;
+                $("#aciertos").html(aciertos);
 
                 $("#loading").show();
 
@@ -368,10 +403,19 @@
                                         $("#" + id).flip(false);
                                         $("#" + id2).flip(false);
                                     }, 600);
+
+                                    intentos++;
+                                    $("#intentos").html(intentos);
                                 }
                                 else {
                                     cartasLevantadas[0].attr('data-lev','S');
                                     cartasLevantadas[1].attr('data-lev','S');
+
+                                    intentos++;
+                                    $("#intentos").html(intentos);
+
+                                    aciertos++;
+                                    $("#aciertos").html(aciertos);
                                 }
                                 setTimeout(function(){
                                     $("#blockcards").hide();
@@ -383,6 +427,7 @@
                         }
                     });
                 });
+                $("#modalReiniciar").modal("hide");
             });
         });
 
