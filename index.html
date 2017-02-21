@@ -156,7 +156,7 @@
         }
 
         #h1Partida {
-            color: black;
+            color: white;
             text-align: center;
         }
 
@@ -191,6 +191,22 @@
         .carta:hover {
             box-shadow: 0 0 50px 5px #ffffe7;
         }
+
+        .modal-content {
+            background-color: #0f212d;
+            color: white;
+            border-color: white;
+        }
+
+        .close {
+            color: white;
+            opacity: 1;
+        }
+
+        .close:hover {
+            color: #9b9b9b;
+            cursor: url("images/mouse.cur"), auto;
+        }
     </style>
 </head>
 <body>
@@ -198,7 +214,6 @@
         <strong id="info">Información de la partida</strong>
         <p>Número de intentos: <span id="intentos" style="margin-left: 0">0</span></p>
         <p>Nº parejas acertadas: <span id="aciertos" style="margin-left: 0">0</span></p>
-        <p>Cartas restantes: <span id="cartasRestantes" style="margin-left: 0">0</span></p>
         <button class="btn hard" data-target="#modalReiniciar" data-toggle="modal" id="btnReiniciar">Iniciar nueva partida</button>
         <div id="autor">
             <h4>David Copano Jiménez</h4>
@@ -253,7 +268,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <p>Elige la dificultad. <strong>NOTA</strong>: Se perderá todo el progreso realizado.</p>
+                    <p style="text-align: center; letter-spacing: 1px">Elige la dificultad. <strong>NOTA</strong>: Se perderá todo el progreso realizado.</p>
                     <div class="col-sm-offset-3">
                         <button class="btn btn-success dificultades" value="1" style="border: 2px solid black">La historia y la espada (4x4)</button>
                         <button class="btn hard dificultades" value="2">Sangre, sudor y lágrimas (6x3)</button>
