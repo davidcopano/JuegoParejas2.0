@@ -306,6 +306,11 @@
 
             $("button.dificultades").click(function () {
 
+                $("#divCartas").fadeOut("slow");
+
+                $("#h1Partida").html("Iniciar nueva partida");
+                $(".modal-body p").html("Elige la dificultad. <strong>NOTA</strong>: Se perderá todo el progreso realizado.");
+
                 intentos = 0;
                 $("#intentos").html(intentos);
 
@@ -365,7 +370,7 @@
 
                     $(".left-bar").fadeIn("slow");
 
-                    $("#divCartas").html(salida).fadeIn("slow");
+                    $("#divCartas").html(salida).fadeIn("fast");
 
                     //$("#divCartas").html(salida).fadeIn("slow");
 
@@ -408,6 +413,7 @@
                                     $("#intentos").html(intentos);
                                 }
                                 else {
+                                    // Las cartas coinciden
                                     cartasLevantadas[0].attr('data-lev','S');
                                     cartasLevantadas[1].attr('data-lev','S');
 
@@ -416,7 +422,14 @@
 
                                     aciertos++;
                                     $("#aciertos").html(aciertos);
+
+                                    if(allFlipped()) {
+                                        $("#h1Partida").html("¡Has ganado!");
+                                        $(".modal-body p").html("¡Enhorabuena! ¿Quieres jugar otra partida?");
+                                        $("#modalReiniciar").modal("show");
+                                    }
                                 }
+
                                 setTimeout(function(){
                                     $("#blockcards").hide();
                                 }, 600);
@@ -454,6 +467,27 @@
                 $(elemento).attr("data-muted", "true");
                 $(elemento).attr("title", "Silenciar");
             }
+        }
+
+        function allFlipped() {
+
+            var cantidadCartas = $("div.carta").length;
+
+            var todasGiradas = false;
+            var cont = 0;
+
+            for(var i = 1; i <= cantidadCartas; i++) {
+                var flip = $("#" + i).data("flip-model");
+
+                if(flip.isFlipped == true){
+                    cont++;
+                }
+            }
+            if(cont == cantidadCartas){
+                todasGiradas = true;
+            }
+
+            return todasGiradas;
         }
     </script>
 </body>
