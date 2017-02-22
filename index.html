@@ -215,6 +215,14 @@
         <p>Número de intentos: <span id="intentos" style="margin-left: 0">0</span></p>
         <p>Nº parejas acertadas: <span id="aciertos" style="margin-left: 0">0</span></p>
         <button class="btn hard" data-target="#modalReiniciar" data-toggle="modal" id="btnReiniciar">Iniciar nueva partida</button>
+        <div class="cronometro">
+            <h3>Tiempo</h3>
+            <span id="horas">00</span>
+            <span>:</span>
+            <span id="minutos">00</span>
+            <span>:</span>
+            <span id="segundos">00</span>
+        </div>
         <div id="autor">
             <h4>David Copano Jiménez</h4>
             <p style="text-align: right">2º DAW</p>
@@ -226,9 +234,9 @@
             <source src="audio/main.mp3" type="audio/mp3">
         </audio>
         <div class="audio-controls">
-            <img src="images/audio/play.svg" alt="Reproducir" title="Reproducir" onclick="document.getElementById('music').play();">
-            <img src="images/audio/pause.svg" alt="Pausar" title="Parar" onclick="document.getElementById('music').pause()">
-            <img src="images/audio/mute.svg" alt="Volumen" title="Silenciar" data-muted="true" onclick="cambiaVolumen(this)">
+            <img src="images/audio/play.svg" alt="Reproducir" title="Reproducir audio" onclick="document.getElementById('music').play();">
+            <img src="images/audio/pause.svg" alt="Pausar" title="Parar audio" onclick="document.getElementById('music').pause()">
+            <img src="images/audio/mute.svg" alt="Volumen" title="Silenciar audio" data-muted="true" onclick="cambiaVolumen(this)">
         </div>
     </div>
     <div class="container">
@@ -266,7 +274,6 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h2 class="modal-title" id="h1Partida">Iniciar nueva partida</h2>
                 </div>
-
                 <div class="modal-body">
                     <p style="text-align: center; letter-spacing: 1px">Elige la dificultad. <strong>NOTA</strong>: Se perderá todo el progreso realizado.</p>
                     <div class="col-sm-offset-3">
@@ -284,6 +291,12 @@
     <script>
         var arrayCartas = [], numCartasLevantadas = 0, cartasLevantadas = [];
         var intentos = 0, aciertos = 0;
+        var cronometro = {
+            hora: 0,
+            minuto: 0,
+            segundo: 0
+        };
+        var empiezaCron = undefined;
 
         $(document).ready(function () {
             var width = $("#logo2").width();
@@ -320,6 +333,36 @@
                 }},400)});
 
             $("button.dificultades").click(function () {
+
+                cronometro.hora = 0;
+                cronometro.minuto = 0;
+                cronometro.segundo = 0;
+
+                clearInterval(empiezaCron);
+
+                empiezaCron = setInterval(function(){
+                    // Segundos
+                    cronometro.segundo++;
+                    if(cronometro.segundo >= 60)
+                    {
+                        cronometro.segundo = 0;
+                        cronometro.minuto++;
+                    }
+
+                    // Minutos
+                    if(cronometro.minuto >= 60)
+                    {
+                        cronometro.minuto = 0;
+                        cronometro.hora++;
+                    }
+
+                    $("#horas").text(cronometro.hora < 10 ? '0' + cronometro.hora : cronometro.hora);
+                    $("#minutos").text(cronometro.minuto < 10 ? '0' + cronometro.minuto : cronometro.minuto);
+                    $("#segundos").text(cronometro.segundo < 10 ? '0' + cronometro.segundo : cronometro.segundo);
+                }, 1000);
+                cronometro.hora = 0;
+                cronometro.minuto = 0;
+                cronometro.segundo = 0;
 
                 $("#divCartas").fadeOut("slow");
 
@@ -439,6 +482,12 @@
                                     $("#aciertos").html(aciertos);
 
                                     if(allFlipped()) {
+                                        cronometro.hora = 0;
+                                        cronometro.minuto = 0;
+                                        cronometro.segundo = 0;
+
+                                        clearInterval(empiezaCron);
+
                                         $("#h1Partida").html("¡Has ganado!");
                                         $(".modal-body p").html("¡Enhorabuena! ¿Quieres jugar otra partida?");
                                         $("#modalReiniciar").modal("show");
@@ -457,6 +506,11 @@
                 });
                 $("#modalReiniciar").modal("hide");
             });
+
+//            $("#btnReiniciar").click(function () {
+//                clearInterval(empiezaCron);
+//            });
+
         });
 
         function shuffle(a) {
