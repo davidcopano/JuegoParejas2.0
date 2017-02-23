@@ -207,6 +207,10 @@
             color: #9b9b9b;
             cursor: url("images/mouse.cur"), auto;
         }
+
+        .cronometro * {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -245,8 +249,8 @@
         <div class="row" id="divDificultades">
             <h2>Elige el modo de dificultad:</h2>
             <div class="col-sm-offset-3" style="margin-left: 29%">
-                <button class="btn dificultades" value="1" style="border: 2px solid black">La historia y la espada (4x4)</button>
-                <button class="btn hard dificultades" value="2">Sangre, sudor y lágrimas (6x3)</button>
+                <button class="btn dificultades" value="1" style="border: 2px solid black">La historia y la espada (4x3)</button>
+                <button class="btn hard dificultades" value="2">Sangre, sudor y lágrimas (4x4)</button>
             </div>
             <div class="col-sm-offset-3" style="margin-left: 32%; margin-top: 3%" id="instrucciones">
                 <div id="reflejo" class="brillo"></div>
@@ -297,6 +301,8 @@
             segundo: 0
         };
         var empiezaCron = undefined;
+        var juegoactivo = false;
+        var juegoterminado = false;
 
         $(document).ready(function () {
             var width = $("#logo2").width();
@@ -333,6 +339,8 @@
                 }},400)});
 
             $("button.dificultades").click(function () {
+                juegoactivo = true;
+                juegoterminado = false;
 
                 cronometro.hora = 0;
                 cronometro.minuto = 0;
@@ -482,6 +490,8 @@
                                     $("#aciertos").html(aciertos);
 
                                     if(allFlipped()) {
+                                        juegoactivo = false;
+                                        juegoterminado = true;
                                         cronometro.hora = 0;
                                         cronometro.minuto = 0;
                                         cronometro.segundo = 0;
@@ -507,9 +517,34 @@
                 $("#modalReiniciar").modal("hide");
             });
 
-//            $("#btnReiniciar").click(function () {
-//                clearInterval(empiezaCron);
-//            });
+            $("#btnReiniciar").click(function () {
+                juegoactivo = false;
+                clearInterval(empiezaCron);
+            });
+
+            $("#modalReiniciar").on("hidden.bs.modal", function () {
+                if(juegoactivo == false && juegoterminado == false) {
+                    juegoactivo = true;
+                    empiezaCron = setInterval(function () {
+                        // Segundos
+                        cronometro.segundo++;
+                        if (cronometro.segundo >= 60) {
+                            cronometro.segundo = 0;
+                            cronometro.minuto++;
+                        }
+
+                        // Minutos
+                        if (cronometro.minuto >= 60) {
+                            cronometro.minuto = 0;
+                            cronometro.hora++;
+                        }
+
+                        $("#horas").text(cronometro.hora < 10 ? '0' + cronometro.hora : cronometro.hora);
+                        $("#minutos").text(cronometro.minuto < 10 ? '0' + cronometro.minuto : cronometro.minuto);
+                        $("#segundos").text(cronometro.segundo < 10 ? '0' + cronometro.segundo : cronometro.segundo);
+                    }, 1000);
+                }
+            })
 
         });
 
